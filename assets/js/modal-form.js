@@ -114,6 +114,13 @@ document.querySelectorAll("[data-fancybox]").forEach((anchor) => {
     const origExt = nameExt.slice(dot + 1).toLowerCase();
     const jpgSuffix = block.dataset.jpgFilename || ""; // ej: "_col-negro"
 
+    // Video preview: si el nombre termina en _preview, calcular ruta y nombre full
+    const isVideoPreview = origExt === "mp4" && fileName.endsWith("_preview");
+    const cleanVideoName = isVideoPreview ? fileName.replace(/_preview$/, "") : fileName;
+    // Ruta full: misma carpeta que el preview + subcarpeta "full/" + nombre sin _preview
+    const dirPath = src.substring(0, src.lastIndexOf("/") + 1); // ej: "../../content/audiovisuales/publicidad/medios/"
+    const fullVideoSrc = isVideoPreview ? `${dirPath}full/${cleanVideoName}.mp4` : null;
+
     // Guardamos datos
     window._downloadData = {
       basePath: base,
@@ -123,14 +130,18 @@ document.querySelectorAll("[data-fancybox]").forEach((anchor) => {
       alt,
       jpgSuffix,
       group,
+      isVideoPreview,
+      cleanVideoName,
+      fullVideoSrc,
     };
 
     /* ====== preview (video/audio muestran mp4; resto imagen) ====== */
     if (["audio", "video"].includes(group)) {
+      const modalVideoSrc = isVideoPreview ? fullVideoSrc : src;
       holder.innerHTML = `
       <div class="video-container" style="position:relative;width:100%;">
         <video id="custom-video" preload="auto" style="width:100%;display:block;">
-          <source src="${src}" type="video/mp4">
+          <source src="${modalVideoSrc}" type="video/mp4">
         </video>
         <button id="video-play" class="video-control"
                 style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
@@ -271,21 +282,28 @@ document.addEventListener("DOMContentLoaded", () => {
       "zip",
     ];
 
+    // Para video preview: usar nombre limpio (sin _preview) en el archivo descargado
+    const baseName = d.group === "video" && d.isVideoPreview ? d.cleanVideoName : d.fileName;
+
     const fname =
       fmt === "jpg"
         ? d.jpgSuffix
-          ? `${d.fileName}${d.jpgSuffix}.jpg`
-          : `${d.fileName}.jpg`
-        : `${d.fileName}.${fmt}`;
+          ? `${baseName}${d.jpgSuffix}.jpg`
+          : `${baseName}.jpg`
+        : `${baseName}.${fmt}`;
 
     // Reglas de URL:
+    // - Video preview: apuntar a /full/<nombre-sin-preview>.mp4
     // - Grupos de un solo formato: reemplazo directo de extensión en el src original.
     // - Resto: carpeta por extensión y mismo nombre.
-    const url = singles.includes(d.group)
-      ? d.originalSrc.replace(/\.[^/.]+$/, `.${fmt}`)
-      : fmt === "jpg"
-        ? `${d.basePath}jpg/${fname}`
-        : `${d.basePath}${fmt}/${fname}`;
+    const url =
+      d.group === "video" && d.isVideoPreview
+        ? d.fullVideoSrc
+        : singles.includes(d.group)
+          ? d.originalSrc.replace(/\.[^/.]+$/, `.${fmt}`)
+          : fmt === "jpg"
+            ? `${d.basePath}jpg/${fname}`
+            : `${d.basePath}${fmt}/${fname}`;
 
     const a = document.createElement("a");
     a.href = url;

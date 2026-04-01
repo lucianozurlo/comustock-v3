@@ -41,14 +41,6 @@ ComuStock v3/
 │  └─ js/
 │     └─ lib/
 ├─ brands/
-│  ├─ fibra/
-│  ├─ flow/
-│  ├─ movil/
-│  ├─ pay/
-│  ├─ personal/
-│  ├─ smarthome/
-│  ├─ tech/
-│  └─ tienda/
 ├─ content/
 │  ├─ audiovisuales/
 │  │  ├─ cartelera/
@@ -149,14 +141,7 @@ ComuStock v3/
 │     └─ presentaciones/
 ├─ firma/
 ├─ mi-firma/
-│  ├─ css/
-│  ├─ img/
 │  └─ js/
-│     └─ lib/
 └─ sections/
-   ├─ audiovisuales/
    ├─ recursos/
-   ├─ templates/
    └─ toolkits/
-      ├─ disenar/
-      └─ redactar/

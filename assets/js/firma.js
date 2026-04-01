@@ -2,7 +2,7 @@
 const LINKEDIN_ICON_URL =
 	"https://comustock.personal.com.ar/firma/linkedinIso.png";
 
-const $ = (sel, ctx = document) => ctx.querySelector(sel);
+const qs = (sel, ctx = document) => ctx.querySelector(sel);
 const trim = (s) => (s || "").trim();
 const esc = (s) =>
 	(s || "").replace(
@@ -11,11 +11,11 @@ const esc = (s) =>
 	);
 
 const els = {
-	form: $("#form"),
-	preview: $("#preview"),
-	btnReset: $("#btnReset"),
-	rawHtml: $("#rawHtml"),
-	btnCopyHtml2: $("#btnCopyHtml2"),
+	form: qs("#form"),
+	preview: qs("#preview"),
+	btnReset: qs("#btnReset"),
+	rawHtml: qs("#rawHtml"),
+	btnCopyHtml2: qs("#btnCopyHtml2"),
 };
 
 function formValues() {

@@ -4,14 +4,14 @@
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-/* helpers */
-const $ = (s) => document.querySelector(s);
-const $$ = (s) => [...document.querySelectorAll(s)];
+/* helpers — qs/qsa en vez de $/$$, para no colisionar con jQuery */
+const qs = (s) => document.querySelector(s);
+const qsa = (s) => [...document.querySelectorAll(s)];
 const off = (i) => (i === 0 ? 282 : 221); // offset por sección
 
 /* desplazamiento con offset ------------------------------------------------ */
 function goTo(id, smooth = true) {
-	const el = $('#' + id);
+	const el = qs('#' + id);
 	if (!el) return;
 
 	/* abre acordeón si procede ------------------------------------------- */
@@ -29,7 +29,7 @@ function goTo(id, smooth = true) {
 	}
 
 	/* calcula offset contextual ------------------------------------------ */
-	const idx = parentSection ? $$('.brand-section').indexOf(parentSection) : 0;
+	const idx = parentSection ? qsa('.brand-section').indexOf(parentSection) : 0;
 
 	const y = scrollEl.getBoundingClientRect().top + window.pageYOffset - off(idx);
 	window.scrollTo({ top: y, behavior: smooth ? 'smooth' : 'auto' });
@@ -46,18 +46,18 @@ function goTo(id, smooth = true) {
 /* lateral activo --------------------------------------------------------- */
 function highlightLink() {
 	const y = window.pageYOffset;
-	let activeId = $$('.brand-section')[0].id;
+	let activeId = qsa('.brand-section')[0].id;
 
-	$$('.brand-section').forEach((sec, i) => {
+	qsa('.brand-section').forEach((sec, i) => {
 		if (y >= sec.offsetTop - off(i)) activeId = sec.id;
 	});
 
-	$$('.side-menu a').forEach((a) => a.classList.toggle('active', a.hash.slice(1) === activeId));
+	qsa('.side-menu a').forEach((a) => a.classList.toggle('active', a.hash.slice(1) === activeId));
 }
 
 /* acordeones exclusivos --------------------------------------------------- */
 function openAccordion(acc) {
-	$$('.cs-toggles-item').forEach((item) => {
+	qsa('.cs-toggles-item').forEach((item) => {
 		const box = item.querySelector('.cs-toggles-item--content');
 		if (!box) return;
 
@@ -78,10 +78,10 @@ function watchdogHash() {
 
 	let ticks = 20;
 	const iv = setInterval(() => {
-		const el = $('#' + target);
+		const el = qs('#' + target);
 		if (!el) return;
 		const parent = el.closest('.brand-section');
-		const idx = parent ? $$('.brand-section').indexOf(parent) : 0;
+		const idx = parent ? qsa('.brand-section').indexOf(parent) : 0;
 		const wanted =
 			(parent && parent.id === 'productos' ? parent : el).getBoundingClientRect().top - off(idx);
 
@@ -93,7 +93,7 @@ function watchdogHash() {
 /* listeners -------------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
 	/* menú lateral */
-	$$('.side-menu a').forEach((a) =>
+	qsa('.side-menu a').forEach((a) =>
 		a.addEventListener('click', (e) => {
 			e.preventDefault();
 			e.stopImmediatePropagation();
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	/* clic en título acordeón → exclusivo */
-	$$('.cs-toggles-item--title').forEach((t) =>
+	qsa('.cs-toggles-item--title').forEach((t) =>
 		t.addEventListener('click', () => openAccordion(t.closest('.cs-toggles-item')))
 	);
 

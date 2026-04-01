@@ -42,15 +42,20 @@ body {
 		Arial,
 		"Apple Color Emoji",
 		"Segoe UI Emoji";
+	color: var(--cs-s-text);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+main {
 	background: radial-gradient(
 		60rem 60rem at 10% 0%,
 		#ffffff 0%,
 		var(--cs-s-body-bg) 45% 60%,
 		#f4f6f8 100%
 	);
-	color: var(--cs-s-text);
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+}
+section {
+	padding: 5px 0 80px 0;
 }
 .wrap {
 	max-width: 1200px;
@@ -151,7 +156,7 @@ select {
 	outline: none;
 	margin: 6px 0 10px 0;
 	box-shadow: 0 1px 0 var(--cs-s-border-mute);
-	font-family: var(--cs-pulso);
+	font-family: "Segoe UI", sans-serif;
 	font-weight: 400;
 	font-size: 14px;
 }
@@ -173,7 +178,7 @@ select {
 	background-repeat: no-repeat;
 	background-position: calc(100% - var(--select-arrow-inset)) 50%;
 	background-size: 12px 8px;
-	font-family: var(--cs-pulso);
+	font-family: "Segoe UI", sans-serif;
 	font-weight: 400;
 	font-size: 14px;
 }

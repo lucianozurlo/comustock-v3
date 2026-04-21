@@ -1,0 +1,38 @@
+/*
+ * index.css - Reset mínimo para ComuStock React
+ * Los estilos del sitio se cargan desde public/assets/css/ via index.html
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/*
+ * Override the animation system's opacity:0 on [data-appear] elements.
+ * The original site uses jQuery + IntersectionObserver to add 'in-view' class.
+ * In React we replicate this, but as a safety net we ensure elements are
+ * always visible after their transition duration.
+ *
+ * The CSS rule in style.css is:
+ *   [data-appear*='fade-'], [data-appear*='zoom-'] { opacity: 0; }
+ *   [data-appear*='fade-'].in-view, [data-appear*='zoom-'].in-view { opacity: 1; }
+ *
+ * We keep the animation system working but ensure nothing stays hidden forever.
+ */
+[data-appear] {
+  transition:
+    opacity 0.5s,
+    transform 0.5s;
+}
